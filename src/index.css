@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   DESIGN TOKENS — 3 couleurs principales : crème, vert profond, jaune doré
+   Les autres valeurs ne sont que des nuances de ces trois couleurs
+   (+ une encre très foncée pour la lisibilité du texte).
+------------------------------------------------------------------- */
+@theme {
+  --color-cream: #FFF8EC;
+  --color-cream-200: #FBEFD9;   /* crème légèrement plus soutenue */
+  --color-cream-300: #F5E4C4;
+  --color-forest: #07543F;
+  --color-forest-700: #054332;
+  --color-forest-900: #03301F;
+  --color-forest-100: #E3EEE8;  /* vert très clair (nuance du vert) */
+  --color-gold: #F5A623;
+  --color-gold-600: #E0920F;
+  --color-gold-100: #FDEBC8;    /* jaune très clair (nuance du jaune) */
+  --color-ink: #1D2420;         /* texte principal */
+  --color-ink-soft: #4A524D;    /* texte secondaire */
+
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-script: "Caveat", "Segoe Script", cursive;
+
+  --radius-blob: 42% 58% 55% 45% / 48% 42% 58% 52%;
+  --shadow-soft: 0 18px 40px -22px rgb(7 84 63 / 0.35);
+  --shadow-card: 0 10px 30px -18px rgb(29 36 32 / 0.35);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply font-sans text-forest;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    font-weight: 800;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .on-dark :focus-visible,
+  .bg-forest :focus-visible {
+    outline-color: var(--color-gold);
+  }
+  img {
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .script {
+    font-family: var(--font-script);
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+  .eyebrow {
+    @apply text-sm font-bold uppercase text-gold-600;
+    letter-spacing: 0.16em;
+  }
+  .blob {
+    border-radius: var(--radius-blob);
+  }
+  .field-input {
+    @apply w-full rounded-2xl border-2 border-cream-300 bg-white px-4 py-3 text-base text-ink placeholder:text-ink-soft/60 transition-colors;
+  }
+  .field-input:focus {
+    @apply border-forest outline-none;
+    box-shadow: 0 0 0 4px rgb(245 166 35 / 0.35);
+  }
+  .field-input[aria-invalid="true"] {
+    @apply border-[#B3261E];
+  }
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.25s ease;
+  }
+  .link-underline:hover,
+  .link-underline[aria-current="page"] {
+    background-size: 100% 2px;
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-float { animation: float-slow 7s ease-in-out infinite; }
+.animate-fade-up { animation: fade-up 0.6s ease-out both; }
+.animate-slide-in { animation: slide-in-right 0.3s ease-out both; }
+.animate-fade-in { animation: fade-in 0.2s ease-out both; }
+
+/* Réduction des animations */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
